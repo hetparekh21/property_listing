@@ -39,21 +39,21 @@ class Controller extends BaseController
                     $selected_category = $category;
                     // $properties = properties::where('tags', 'LIKE', "%$query%")->where('category_id', '=', $category)->get('*')->toarray();
 
-                    $properties = Controller::get_properties(null, $query, $selected_category)->paginate(15);
+                    $properties = Controller::get_properties(null, $query, $selected_category)->paginate(12);
                 } else {
                     // show all categories if no category selected_category
                     Controller::maintain_session_category(0);
                     if (empty($selected_categories)) {
 
                         $array = Controller::get_properties(null, $query, null);
-                        $properties = $array[0]->paginate(15);
+                        $properties = $array[0]->paginate(12);
                         $selectable_categories = $array[1];
                     } else {
 
                         // $properties = properties::where('tags', 'LIKE', "%$query%")->wherein('category_id', $selected_categories)->get('*')->toarray();
 
                         $array = Controller::get_properties($selected_categories, $query, null);
-                        $properties = $array[0]->paginate(15);
+                        $properties = $array[0]->paginate(12);
                         $selectable_categories = $array[1];
                     }
                 }
@@ -61,10 +61,8 @@ class Controller extends BaseController
                 if (Auth::check() && Auth::user()->id == 1) {
 
                     return view('admin.admin_dashboard', compact('selectable_categories', 'categories', 'properties', 'selected_category', 'query', 'selected_categories'));
-                
                 } else {
                     return view('index', compact('selectable_categories', 'categories', 'properties', 'selected_category', 'query', 'selected_categories'));
-                
                 }
 
                 // return view('index', compact('selectable_categories', 'categories', 'properties', 'selected_category', 'query', 'selected_categories'));
@@ -85,11 +83,13 @@ class Controller extends BaseController
             $selected_categories = session()->get('selected_categories');
             $selectable_categories = array();
 
+
+
             if ($selected_category != null && $selected_category != '0') {
 
-                $properties = Controller::get_properties(null, $query, $selected_category)->paginate(15);
+                $properties = Controller::get_properties(null, $query, $selected_category)->paginate(12);
             } else {
- 
+
                 if (empty($selected_categories)) {
 
                     // $properties = properties::where('tags', 'LIKE', "%$query%")->get('*')->toarray();
@@ -97,7 +97,6 @@ class Controller extends BaseController
                     $array = Controller::get_properties(null, $query, null);
                     $properties = $array[0]->paginate(12);
                     $selectable_categories = $array[1];
-
                 } else {
 
                     // $properties = properties::where('tags', 'LIKE', "%$query%")->wherein('category_id', $selected_categories)->get('*')->toarray();
@@ -105,21 +104,17 @@ class Controller extends BaseController
                     $array = Controller::get_properties($selected_categories, $query, null);
                     $properties = $array[0]->paginate(12);
                     $selectable_categories = $array[1];
-
                 }
             }
-
 
 
             if (Auth::check() && Auth::user()->id == 1) {
 
                 return view('admin.admin_dashboard', compact('selectable_categories', 'categories', 'properties', 'selected_category', 'query', 'selected_categories'));
-            
             } else {
                 // echo Auth::user()->id == 1 ? 'logged in':'no';
                 // print_r($selectable_categories);
                 return view('index', compact('selectable_categories', 'categories', 'properties', 'selected_category', 'query', 'selected_categories'));
-            
             }
 
             // return view('index', compact('links', 'selectable_categories', 'categories', 'properties', 'selected_category', 'query', 'selected_categories'));

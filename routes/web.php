@@ -56,6 +56,10 @@ Route::post('/manage_category',[admin::class,'manage_category'])->name('manage_c
 
 Route::get('/get_category', [admin::class, 'get_category'])->name('get_category');
 
+Route::post('/manage_property',[admin::class,'manage_property'])->name('manage_property');
+
+Route::get('/get_property',[admin::class,'get_property'])->name('get_property');
+
 Route::get('/logout', function () {
 
     Auth::logout();

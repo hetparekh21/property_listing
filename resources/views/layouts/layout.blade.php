@@ -53,16 +53,31 @@
     </div>
 
     <div class="row mt-5">
+
         @foreach ($properties as $data)
-            <div class="card mr-4 mt-4" style="width:17rem;border-radius: 18px;">
+            <div class="card mr-4 mt-4 h-100" style="width:17rem;border-radius: 18px;">
                 <img class="card-img-top p-3" src="data:image/png;base64,{{ chunk_split(base64_encode($data['img'])) }}"
                     style="border-radius: 23px;object-fit: cover;" />
+                <div class="card-img-overlay">
+                    <a name="" id="" class="btn btn-outline-light rounded-pill" href="#"
+                        role="button">View</a>
+                    @php
+                        if ($admin) {
+                            echo '<button class="btn btn-dark align-self-end" id="prop_' . $data['property_id'] . '" onclick="edit(this.id)" value=' . $data['property_id'] . '>Edit</button>';
+                        }
+                    @endphp
+                </div>
                 <div class="card-body">
                     <h4 class="card-title">{{ $data['property_name'] }}</h4>
-                    <p class="card-text text-muted">Parrafo<br /></p><a href>Link</a>
+                    <p class="card-text text-muted">{{ $data['description'] }}</p>
+                    <p class="card-text text-muted">{{ $data['location'] }}</p>
+                    <p class="card-text" style="font-weight: bolder">Rs. {{ $data['price'] }}</p>
+                    {{-- <button type="button" class="btn btn-primary"></button> --}}
+
                 </div>
             </div>
         @endforeach
+
     </div>
 
     <div class="row mt-3">
