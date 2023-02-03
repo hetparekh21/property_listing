@@ -15,7 +15,7 @@ class Controller extends BaseController
     public function index(Request $req)
     {
         // session()->flash('results', true);
-
+        // session()->flush();
         if ($req->isMethod('post')) {
 
             // if the request is from search form
@@ -39,7 +39,7 @@ class Controller extends BaseController
                     $selected_category = $category;
                     // $properties = properties::where('tags', 'LIKE', "%$query%")->where('category_id', '=', $category)->get('*')->toarray();
 
-                    $properties = Controller::get_properties(null, $query, $selected_category)->paginate(1);
+                    $properties = Controller::get_properties(null, $query, $selected_category)->paginate(15);
                 } else {
                     // show all categories if no category selected_category
                     Controller::maintain_session_category(0);
@@ -84,11 +84,10 @@ class Controller extends BaseController
             $selected_category = session()->get('selected_category');
             $selected_categories = session()->get('selected_categories');
             $selectable_categories = array();
-            $links = array();
 
             if ($selected_category != null && $selected_category != '0') {
 
-                $properties = Controller::get_properties(null, $query, $selected_category)->paginate(1);
+                $properties = Controller::get_properties(null, $query, $selected_category)->paginate(15);
             } else {
  
                 if (empty($selected_categories)) {
@@ -99,7 +98,6 @@ class Controller extends BaseController
                     $properties = $array[0]->paginate(12);
                     $selectable_categories = $array[1];
 
-                    $links = $properties->links();
                 } else {
 
                     // $properties = properties::where('tags', 'LIKE', "%$query%")->wherein('category_id', $selected_categories)->get('*')->toarray();
@@ -108,7 +106,6 @@ class Controller extends BaseController
                     $properties = $array[0]->paginate(12);
                     $selectable_categories = $array[1];
 
-                    $links = $properties->links();
                 }
             }
 
@@ -167,24 +164,24 @@ class Controller extends BaseController
         if ($selected_category != null || $selected_category != 0) {
 
             // $properties = properties::where('tags', 'LIKE', "%$query%")->where('category_id', '=', $selected_category)->get('*');
-            $properties = properties::join('prop_img', 'prop_img.property_id', 'properties.property_id')->where('tags', 'LIKE', "%$query%")->where('category_id', '=', $selected_category)->get(['properties.*', 'prop_img.img']);
+            $properties = properties::join('prop_img', 'prop_img.property_property_id', 'properties.property_id')->where('tags', 'LIKE', "%$query%")->where('category_category_id', '=', $selected_category)->get(['properties.*', 'prop_img.img']);
         } else {
 
             if (empty($selected_categories)) {
 
-                $properties = properties::join('prop_img', 'prop_img.property_id', 'properties.property_id')->where('tags', 'LIKE', "%$query%")->get(['properties.*', 'prop_img.img']);
+                $properties = properties::join('prop_img', 'prop_img.property_property_id', 'properties.property_id')->where('tags', 'LIKE', "%$query%")->get(['properties.*', 'prop_img.img']);
 
                 $categories = category::wherein('category.category_id', function ($q) use ($query) {
-                    $q->select('category.category_id')->from(with(new properties)->getTable())->join('category', 'category.category_id', 'properties.category_id')->whereraw("properties.tags LIKE '%" . $query . "%' OR category.tags LIKE '%" . $query . "%'")->groupby('category.category_id');
+                    $q->select('category.category_id')->from(with(new properties)->getTable())->join('category', 'category.category_id', 'properties.category_category_id')->whereraw("properties.tags LIKE '%" . $query . "%' OR category.tags LIKE '%" . $query . "%'")->groupby('category.category_id');
                 })->get(['category.category_id', 'category.category_name', 'category.img']);
 
                 return array($properties, $categories);
             } else {
 
-                $properties = properties::join('prop_img', 'prop_img.property_id', 'properties.property_id')->where('tags', 'LIKE', "%$query%")->wherein('category_id', $selected_categories)->get(['properties.*', 'prop_img.img']);
+                $properties = properties::join('prop_img', 'prop_img.property_property_id', 'properties.property_id')->where('tags', 'LIKE', "%$query%")->wherein('category_category_id', $selected_categories)->get(['properties.*', 'prop_img.img']);
 
                 $categories = category::wherein('category.category_id', function ($q) use ($query) {
-                    $q->select('category.category_id')->from(with(new properties)->getTable())->join('category', 'category.category_id', 'properties.category_id')->whereraw("properties.tags LIKE '%" . $query . "%' OR category.tags LIKE '%" . $query . "%'")->groupby('category.category_id');
+                    $q->select('category.category_id')->from(with(new properties)->getTable())->join('category', 'category.category_id', 'properties.category_category_id')->whereraw("properties.tags LIKE '%" . $query . "%' OR category.tags LIKE '%" . $query . "%'")->groupby('category.category_id');
                 })->get(['category.category_id', 'category.category_name', 'category.img']);
 
                 return array($properties, $categories);

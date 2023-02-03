@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class properties extends Model
 {
+    public $timestamps = false;
     /**
      * The primary key for the model.
      * 
@@ -27,14 +28,14 @@ class properties extends Model
     /**
      * @var array
      */
-    protected $fillable = ['category_id', 'property_name', 'description', 'loction', 'price', 'tags'];
+    protected $fillable = ['category_id', 'property_name', 'description', 'location', 'price', 'tags'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function category()
     {
-        return $this->belongsTo('App\Models\Category', null, 'category_id');
+        return $this->belongsTo('App\Models\category', null, 'category_id');
     }
 
     /**
@@ -42,6 +43,6 @@ class properties extends Model
      */
     public function propImgs()
     {
-        return $this->hasMany('App\Models\PropImg', null, 'property_id');
+        return $this->hasMany('App\Models\prop_img', null, 'property_id');
     }
 }

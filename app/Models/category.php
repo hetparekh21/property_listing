@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class category extends Model
 {
+    public $timestamps = false;
     /**
      * The table associated with the model.
      * 
@@ -37,6 +38,6 @@ class category extends Model
      */
     public function properties()
     {
-        return $this->hasMany('App\Models\Property', null, 'category_id');
+        return $this->hasMany('App\Models\properties', null, 'category_id');
     }
 }

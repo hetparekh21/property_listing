@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class prop_img extends Model
 {
+    public $timestamps = false;
     /**
      * The table associated with the model.
      * 
@@ -36,6 +37,6 @@ class prop_img extends Model
      */
     public function property()
     {
-        return $this->belongsTo('App\Models\Property', null, 'property_id');
+        return $this->belongsTo('App\Models\properties', null, 'property_id');
     }
 }

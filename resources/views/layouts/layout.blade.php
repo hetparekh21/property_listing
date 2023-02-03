@@ -47,7 +47,9 @@
     </div>
 
     <div class="row mt-4">
-        <h5>Showing results :</h5>
+        <div class="col">
+            <h5>Showing results :</h5>
+        </div>
     </div>
 
     <div class="row mt-5">

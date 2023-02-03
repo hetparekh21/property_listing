@@ -27,31 +27,34 @@ Route::get('/remove_from_session/{category_id}', [Controller::class, 'remove_fro
 Route::group(["prefix" => '/admin'], function () {
 
     Route::get('/', [Controller::class, 'index'])->name('admin.dashboard')->middleware('admin_auth');
+
+    Route::post('/', function (Request $req) {
+
+        $req->validate(["
+                
+                'email' => 'required|email',
+        
+                'password' => 'required|min:8'
+        "]);
+    
+        $credentials = request()->only('email', 'password');
+    
+        if (Auth::attempt($credentials)) {
+    
+            if (Auth::user()->id == 1) {
+    
+                return redirect()->route('admin.dashboard');
+            }
+        }
+    
+        return redirect()->route('admin.login');
+    })->name('admin.login');
+
 });
 
+Route::post('/manage_category',[admin::class,'manage_category'])->name('manage_category');
+
 Route::get('/get_category', [admin::class, 'get_category'])->name('get_category');
-
-Route::post('/admin', function (Request $req) {
-
-    $req->validate(["
-            
-            'email' => 'required|email',
-    
-            'password' => 'required|min:8'
-    "]);
-
-    $credentials = request()->only('email', 'password');
-
-    if (Auth::attempt($credentials)) {
-
-        if (Auth::user()->id == 1) {
-
-            return redirect()->route('admin.dashboard');
-        }
-    }
-
-    return redirect()->route('admin.login');
-})->name('admin.login');
 
 Route::get('/logout', function () {
 

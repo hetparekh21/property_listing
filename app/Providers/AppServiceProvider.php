@@ -31,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
 
         Session::put('selected_categories', []);
         Session::put('query', '');
+        // Session::put('selected_category', '');
 
         if (!Collection::hasMacro('paginate')) {
 
